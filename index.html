@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Briefing da sua landing page · Stoot</title>
-<meta name="description" content="Questionário da Stoot para construir a sua landing page.">
+<title>Briefing do seu site · Stoot</title>
+<meta name="description" content="Questionário da Stoot para construir o seu site.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -131,8 +131,8 @@ const ENVIO = 'https://script.google.com/macros/s/AKfycbyL3SAMXA_S0f0TNHEPWJTZjv
 /* Perguntas: as mesmas do Google Forms e do Tally. `chave` é o que o stoot.OS usa para pôr cada resposta no dossiê. */
 const PESSOA = 'Como profissional';
 const ETAPAS = [
-  { id: 'inicio', rot: 'Apresentação', titulo: 'Vamos montar a sua landing page',
-    intro: ['Este é o ponto de partida da sua página. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com as suas palavras, do jeito que você explicaria para um cliente. Não existem respostas certas, e o que você digitar fica salvo neste aparelho até enviar. Leva cerca de 15 minutos.'],
+  { id: 'inicio', rot: 'Apresentação', titulo: 'Vamos montar o seu site?',
+    intro: ['Este é o ponto de partida do seu site. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com as suas palavras, do jeito que você explicaria para um cliente. Não existem respostas certas, e o que você digitar fica salvo neste aparelho até enviar. Leva cerca de 15 minutos.'],
     campos: [
       { chave: 'nome', tipo: 'texto', titulo: 'Seu nome e o nome do negócio', ob: true, ph: 'Ex.: Ana Souza · Ana Doces Finos' },
       { chave: 'perfil', tipo: 'escolha', titulo: 'Como você se apresenta para os clientes?', ob: true, opcoes: [
@@ -142,7 +142,7 @@ const ETAPAS = [
       ] },
     ] },
   { id: 'pessoa', rot: 'Sobre você', titulo: 'Agora, conte sobre você', se: (r) => r.perfil === PESSOA,
-    intro: ['É daqui que sai a área de apresentação da página.'],
+    intro: ['É daqui que sai a área de apresentação do site.'],
     campos: [
       { chave: 'especialidade', tipo: 'texto', titulo: 'Qual é a sua área de atuação?', ajuda: 'Do jeito que você explicaria para um cliente. Ex.: cirurgiã plástica com foco em mamas; advogado trabalhista que atende empresas; nutricionista esportiva.', ob: true },
       { chave: 'registros', tipo: 'texto', titulo: 'Registro profissional e certificações', ajuda: 'Ex.: CRM e RQE, OAB, CRN, CRP, CREA. Se a sua profissão não tem registro, deixe em branco.' },
@@ -150,7 +150,7 @@ const ETAPAS = [
       { chave: 'jornada', tipo: 'longo', titulo: 'Como funciona o atendimento, do primeiro contato até a entrega?', ajuda: 'Conte as etapas. Ex.: consulta, exames, procedimento e retorno; reunião inicial, proposta, contrato e acompanhamento do processo.' },
     ] },
   { id: 'negocio', rot: 'Sobre o negócio', titulo: 'Agora, conte sobre o negócio', se: (r) => r.perfil && r.perfil !== PESSOA,
-    intro: ['É daqui que sai a área de apresentação da página.'],
+    intro: ['É daqui que sai a área de apresentação do site.'],
     campos: [
       { chave: 'atuacao', tipo: 'longo', titulo: 'O que o seu negócio faz e para quem?', ajuda: 'Em poucas linhas, como você explicaria para alguém que nunca ouviu falar. Ex.: clínica de dermatologia em Curitiba com quatro médicos; confeitaria artesanal de bolos para festas; escritório de advocacia de família.', ob: true },
       { chave: 'trajetoria', tipo: 'longo', titulo: 'História e conquistas', ajuda: 'Como e quando começou, onde atende, tamanho da equipe, marcos importantes, prêmios e números (anos de mercado, clientes atendidos).', ob: true },
@@ -160,9 +160,9 @@ const ETAPAS = [
   { id: 'servicos', rot: 'O que você oferece', titulo: 'O que você oferece',
     campos: [
       { chave: 'servicos', tipo: 'longo', titulo: 'Quais serviços ou produtos você oferece?', ajuda: 'Um por linha, com o nome e uma frase do que é e para quem é. Ex.: Bolo de casamento: bolos sob medida para até 300 convidados. Consultoria trabalhista: prevenção de processos para pequenas empresas.', ob: true },
-      { chave: 'foco', tipo: 'longo', titulo: 'O que esta página deve vender ou apresentar?', ajuda: 'Um serviço ou produto específico, uma campanha, ou o negócio como um todo. Se for mais de um, diga qual é o principal.', ob: true },
-      { chave: 'servicos_juntos', tipo: 'longo', titulo: 'O que costuma ser contratado junto?', ajuda: 'Combinações frequentes ajudam a montar ofertas na página. Ex.: limpeza de pele e peeling; bolo e docinhos; divórcio e inventário.' },
-      { chave: 'servicos_futuros', tipo: 'longo', titulo: 'Pensa em oferecer algo novo nos próximos meses?', ajuda: 'Assim a página já nasce preparada para crescer.' },
+      { chave: 'foco', tipo: 'longo', titulo: 'O que este site deve vender ou apresentar?', ajuda: 'Um serviço ou produto específico, uma campanha, ou o negócio como um todo. Se for mais de um, diga qual é o principal.', ob: true },
+      { chave: 'servicos_juntos', tipo: 'longo', titulo: 'O que costuma ser contratado junto?', ajuda: 'Combinações frequentes ajudam a montar ofertas no site. Ex.: limpeza de pele e peeling; bolo e docinhos; divórcio e inventário.' },
+      { chave: 'servicos_futuros', tipo: 'longo', titulo: 'Pensa em oferecer algo novo nos próximos meses?', ajuda: 'Assim o site já nasce preparado para crescer.' },
     ] },
   { id: 'diferencial', rot: 'Diferenciais', titulo: 'Por que escolhem você',
     campos: [
@@ -176,14 +176,14 @@ const ETAPAS = [
     campos: [
       { chave: 'publico', tipo: 'longo', titulo: 'Quem é o seu cliente ideal?', ajuda: 'Idade, região, momento de vida, profissão, poder de compra. Se ajudar, descreva um cliente real que você gostaria de ter mais (sem dizer o nome).', ob: true },
       { chave: 'dores', tipo: 'longo', titulo: 'O que faz essa pessoa procurar você?', ajuda: 'O problema, o desejo ou a situação do momento. Ex.: uma dor que não passa, um processo trabalhista, a festa de 15 anos chegando, a vontade de mudar o visual.', ob: true },
-      { chave: 'duvidas', tipo: 'longo', titulo: 'Quais perguntas os clientes sempre fazem antes de contratar?', ajuda: 'Preço, prazo, como funciona, se dói, se atende convênio, se entrega na região. Elas viram a seção de perguntas e respostas da página.', ob: true },
+      { chave: 'duvidas', tipo: 'longo', titulo: 'Quais perguntas os clientes sempre fazem antes de contratar?', ajuda: 'Preço, prazo, como funciona, se dói, se atende convênio, se entrega na região. Elas viram a seção de perguntas e respostas do site.', ob: true },
     ] },
-  { id: 'pagina', rot: 'A página', titulo: 'Por fim, a página',
+  { id: 'pagina', rot: 'O site', titulo: 'Por fim, o site',
     campos: [
-      { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar na página?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Chamar no WhatsApp', 'Agendar um horário', 'Pedir um orçamento', 'Comprar online', 'Preencher um formulário de contato', 'Conhecer o meu trabalho'], outro: true },
-      { chave: 'contato', tipo: 'longo', titulo: 'Contato, endereço e horários', ajuda: 'Exatamente como devem aparecer na página. Se atende online ou faz entregas, diga a região.', ob: true },
-      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site e outros links', ajuda: 'Os links que podem aparecer na página.' },
-      { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer na página?', ajuda: 'Assuntos, palavras, promessas, imagens ou comparações que você prefere evitar, inclusive regras do seu conselho profissional.' },
+      { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar no site?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Chamar no WhatsApp', 'Agendar um horário', 'Pedir um orçamento', 'Comprar online', 'Preencher um formulário de contato', 'Conhecer o meu trabalho'], outro: true },
+      { chave: 'contato', tipo: 'longo', titulo: 'Contato, endereço e horários', ajuda: 'Exatamente como devem aparecer no site. Se atende online ou faz entregas, diga a região.', ob: true },
+      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site atual e outros links', ajuda: 'Os links que podem aparecer no site.' },
+      { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer no site?', ajuda: 'Assuntos, palavras, promessas, imagens ou comparações que você prefere evitar, inclusive regras do seu conselho profissional.' },
       { chave: 'extra', tipo: 'longo', titulo: 'Quer contar mais alguma coisa?', ajuda: 'Qualquer informação que não perguntamos e que você acha importante.' },
     ] },
 ];
