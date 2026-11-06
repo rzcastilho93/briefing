@@ -61,6 +61,9 @@ textarea.ent { min-height: 116px; resize: vertical; line-height: 1.5; }
 .op.multi .marc { border-radius: 6px; }
 .op .marc svg { width: 13px; height: 13px; opacity: 0; transition: opacity .15s; }
 .op span.txt { font-weight: 600; font-size: 15.5px; }
+.op span.txt small { display: block; font-weight: 500; font-size: 13.5px; color: var(--tx3); margin-top: 2px; line-height: 1.4; }
+.op.com-desc { align-items: flex-start; padding-top: 14px; padding-bottom: 14px; }
+.op.com-desc .marc { margin-top: 1px; }
 .op:has(input:checked) { border-color: var(--ok-fill); box-shadow: 0 0 0 1.5px var(--ok-fill); background: var(--ok-s); }
 .op:has(input:checked) .marc { background: var(--ok); border-color: var(--ok); }
 .op:has(input:checked) .marc svg { opacity: 1; }
@@ -126,55 +129,61 @@ textarea.ent { min-height: 116px; resize: vertical; line-height: 1.5; }
 const ENVIO = 'https://script.google.com/macros/s/AKfycbyL3SAMXA_S0f0TNHEPWJTZjvh0b3uaYNDhze69PSuNI-7OoPDrFeOz6C8F5nBEOIO7Ow/exec';
 
 /* Perguntas: as mesmas do Google Forms e do Tally. `chave` é o que o stoot.OS usa para pôr cada resposta no dossiê. */
+const PESSOA = 'Como profissional';
 const ETAPAS = [
   { id: 'inicio', rot: 'Apresentação', titulo: 'Vamos montar a sua landing page',
-    intro: ['Este é o ponto de partida da sua página. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com calma e com as suas palavras: não existem respostas certas. Leva cerca de 15 minutos, e o que você digitar fica salvo neste aparelho até enviar.'],
+    intro: ['Este é o ponto de partida da sua página. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com as suas palavras, do jeito que você explicaria para um cliente. Não existem respostas certas, e o que você digitar fica salvo neste aparelho até enviar. Leva cerca de 15 minutos.'],
     campos: [
-      { chave: 'nome', tipo: 'texto', titulo: 'Seu nome e o nome da clínica ou empresa', ob: true, ph: 'Ex.: Dra. Ana Souza · Clínica Bem-Estar' },
-      { chave: 'perfil', tipo: 'escolha', titulo: 'Você é', ob: true, opcoes: ['Profissional de saúde', 'Clínica ou consultório', 'Outro tipo de negócio'] },
+      { chave: 'nome', tipo: 'texto', titulo: 'Seu nome e o nome do negócio', ob: true, ph: 'Ex.: Ana Souza · Ana Doces Finos' },
+      { chave: 'perfil', tipo: 'escolha', titulo: 'Como você se apresenta para os clientes?', ob: true, opcoes: [
+        { t: PESSOA, d: 'Você é a marca. Ex.: médica, advogado, nutricionista, arquiteta, psicóloga, personal trainer' },
+        { t: 'Como clínica, escritório ou consultório', d: 'Uma equipe com vários profissionais' },
+        { t: 'Como empresa, loja ou marca', d: 'Ex.: confeitaria, ateliê, loja, restaurante, prestadora de serviço' },
+      ] },
     ] },
-  { id: 'saude', rot: 'Sua atuação', titulo: 'Agora, conte sobre você', se: (r) => r.perfil && r.perfil !== 'Outro tipo de negócio',
+  { id: 'pessoa', rot: 'Sobre você', titulo: 'Agora, conte sobre você', se: (r) => r.perfil === PESSOA,
     intro: ['É daqui que sai a área de apresentação da página.'],
     campos: [
-      { chave: 'especialidade', tipo: 'texto', titulo: 'Qual é a sua especialidade (ou as especialidades da clínica)?', ajuda: 'Ex.: dermatologista, cirurgião capilar, nutricionista. Na clínica, liste as áreas atendidas.', ob: true },
-      { chave: 'registros', tipo: 'texto', titulo: 'Registros profissionais', ajuda: 'CRM, RQE, CRN ou outro, com o estado. Eles aparecem no rodapé da página.' },
-      { chave: 'trajetoria', tipo: 'longo', titulo: 'Formação e trajetória', ajuda: 'Faculdade, residência, especializações, cursos, trabalhos, publicações e conquistas. Quanto mais, melhor.', ob: true },
-      { chave: 'jornada', tipo: 'longo', titulo: 'Como é a jornada do paciente com você?', ajuda: 'Do primeiro contato ao acompanhamento. Ex.: consulta, avaliação, exames, procedimento, retorno.' },
+      { chave: 'especialidade', tipo: 'texto', titulo: 'Qual é a sua área de atuação?', ajuda: 'Do jeito que você explicaria para um cliente. Ex.: cirurgiã plástica com foco em mamas; advogado trabalhista que atende empresas; nutricionista esportiva.', ob: true },
+      { chave: 'registros', tipo: 'texto', titulo: 'Registro profissional e certificações', ajuda: 'Ex.: CRM e RQE, OAB, CRN, CRP, CREA. Se a sua profissão não tem registro, deixe em branco.' },
+      { chave: 'trajetoria', tipo: 'longo', titulo: 'Sua formação e trajetória', ajuda: 'Onde estudou, especializações, cursos, há quanto tempo atua, conquistas, publicações, prêmios. Tudo o que mostra a sua experiência.', ob: true },
+      { chave: 'jornada', tipo: 'longo', titulo: 'Como funciona o atendimento, do primeiro contato até a entrega?', ajuda: 'Conte as etapas. Ex.: consulta, exames, procedimento e retorno; reunião inicial, proposta, contrato e acompanhamento do processo.' },
     ] },
-  { id: 'empresa', rot: 'Sua empresa', titulo: 'Agora, conte sobre a empresa', se: (r) => r.perfil === 'Outro tipo de negócio',
+  { id: 'negocio', rot: 'Sobre o negócio', titulo: 'Agora, conte sobre o negócio', se: (r) => r.perfil && r.perfil !== PESSOA,
     intro: ['É daqui que sai a área de apresentação da página.'],
     campos: [
-      { chave: 'atuacao', tipo: 'longo', titulo: 'O que a sua empresa faz?', ajuda: 'Área de atuação, há quanto tempo existe e onde atende.', ob: true },
-      { chave: 'trajetoria', tipo: 'longo', titulo: 'História e conquistas', ajuda: 'Como começou, marcos importantes, prêmios, números e realizações.', ob: true },
-      { chave: 'jornada', tipo: 'longo', titulo: 'Como é a jornada do cliente com vocês?', ajuda: 'Do primeiro contato até a entrega e o pós-venda.' },
+      { chave: 'atuacao', tipo: 'longo', titulo: 'O que o seu negócio faz e para quem?', ajuda: 'Em poucas linhas, como você explicaria para alguém que nunca ouviu falar. Ex.: clínica de dermatologia em Curitiba com quatro médicos; confeitaria artesanal de bolos para festas; escritório de advocacia de família.', ob: true },
+      { chave: 'trajetoria', tipo: 'longo', titulo: 'História e conquistas', ajuda: 'Como e quando começou, onde atende, tamanho da equipe, marcos importantes, prêmios e números (anos de mercado, clientes atendidos).', ob: true },
+      { chave: 'registros', tipo: 'texto', titulo: 'Dados que precisam aparecer no rodapé', ajuda: 'CNPJ, responsável técnico, registro no conselho, alvarás. Ex.: responsável técnico com CRM; OAB da sociedade. Se não houver, deixe em branco.' },
+      { chave: 'jornada', tipo: 'longo', titulo: 'Como funciona o atendimento, do primeiro contato até a entrega?', ajuda: 'Conte as etapas. Ex.: avaliação, procedimento e retorno; pedido pelo WhatsApp, degustação, produção e entrega.' },
     ] },
-  { id: 'servicos', rot: 'Serviços', titulo: 'O que você oferece',
+  { id: 'servicos', rot: 'O que você oferece', titulo: 'O que você oferece',
     campos: [
-      { chave: 'servicos', tipo: 'longo', titulo: 'Quais serviços você oferece?', ajuda: 'Um por linha: o nome do serviço e uma breve descrição. Quanto mais detalhe, melhor fica a página.', ob: true },
-      { chave: 'foco', tipo: 'longo', titulo: 'Qual serviço ou assunto é o foco desta landing page?', ajuda: 'Se for uma página para um serviço específico, diga qual. Se for institucional, escreva "todos".', ob: true },
-      { chave: 'servicos_juntos', tipo: 'longo', titulo: 'Quem contrata um serviço costuma pedir outro junto?', ajuda: 'Isso ajuda a mostrar na página a ligação entre os serviços.' },
-      { chave: 'servicos_futuros', tipo: 'longo', titulo: 'Pensa em oferecer novos serviços no futuro? Quais?', ajuda: 'Assim a página já nasce preparada para crescer.' },
+      { chave: 'servicos', tipo: 'longo', titulo: 'Quais serviços ou produtos você oferece?', ajuda: 'Um por linha, com o nome e uma frase do que é e para quem é. Ex.: Bolo de casamento: bolos sob medida para até 300 convidados. Consultoria trabalhista: prevenção de processos para pequenas empresas.', ob: true },
+      { chave: 'foco', tipo: 'longo', titulo: 'O que esta página deve vender ou apresentar?', ajuda: 'Um serviço ou produto específico, uma campanha, ou o negócio como um todo. Se for mais de um, diga qual é o principal.', ob: true },
+      { chave: 'servicos_juntos', tipo: 'longo', titulo: 'O que costuma ser contratado junto?', ajuda: 'Combinações frequentes ajudam a montar ofertas na página. Ex.: limpeza de pele e peeling; bolo e docinhos; divórcio e inventário.' },
+      { chave: 'servicos_futuros', tipo: 'longo', titulo: 'Pensa em oferecer algo novo nos próximos meses?', ajuda: 'Assim a página já nasce preparada para crescer.' },
     ] },
   { id: 'diferencial', rot: 'Diferenciais', titulo: 'Por que escolhem você',
     campos: [
-      { chave: 'diferenciais', tipo: 'longo', titulo: 'Quais são os seus maiores diferenciais?', ajuda: 'Por que os clientes escolhem você e não outro profissional ou empresa?', ob: true },
-      { chave: 'provas', tipo: 'longo', titulo: 'O que comprova o seu trabalho?', ajuda: 'Números, prêmios, publicações, entrevistas, depoimentos que podemos usar. Não envie nomes, fotos ou dados de pacientes.' },
-      { chave: 'concorrentes', tipo: 'longo', titulo: 'Quem são os seus concorrentes ou referências?', ajuda: 'Pode ser alguém que você admira. Se tiver, mande o site ou o Instagram.' },
-      { chave: 'proposito', tipo: 'longo', titulo: 'Por que você escolheu essa profissão? Quais são os seus valores?' },
-      { chave: 'frase', tipo: 'texto', titulo: 'Existe uma frase que represente você ou a marca?' },
+      { chave: 'diferenciais', tipo: 'longo', titulo: 'Por que os clientes escolhem você?', ajuda: 'Pense no que você ouve dos clientes e no que faz diferente da concorrência. Ex.: atendimento sem pressa, resposta no mesmo dia, ingredientes sem conservantes, especialização rara na cidade.', ob: true },
+      { chave: 'provas', tipo: 'longo', titulo: 'O que comprova a qualidade do seu trabalho?', ajuda: 'Números, nota no Google, prêmios, aparições na imprensa, depoimentos, casos de sucesso. Não envie nomes ou fotos de clientes e pacientes sem autorização.' },
+      { chave: 'concorrentes', tipo: 'longo', titulo: 'Concorrentes ou referências', ajuda: 'Quem disputa os mesmos clientes ou quem você admira, mesmo de outra cidade. Se tiver, mande o site ou o Instagram.' },
+      { chave: 'proposito', tipo: 'longo', titulo: 'Por que você faz o que faz?', ajuda: 'O que motivou a escolha da profissão ou do negócio e os valores que guiam o seu trabalho.' },
+      { chave: 'frase', tipo: 'texto', titulo: 'Existe uma frase que representa a marca?', ajuda: 'Se não tiver, deixe em branco.' },
     ] },
   { id: 'publico', rot: 'Público', titulo: 'Quem você atende',
     campos: [
-      { chave: 'publico', tipo: 'longo', titulo: 'Quem são os seus clientes ou pacientes?', ajuda: 'Idade, gênero, região, momento de vida, o que gostam. Se quiser, descreva um cliente típico.', ob: true },
-      { chave: 'dores', tipo: 'longo', titulo: 'O que leva essas pessoas a procurar você?', ajuda: 'Os problemas, frustrações e queixas mais comuns.', ob: true },
-      { chave: 'duvidas', tipo: 'longo', titulo: 'Quais são as dúvidas mais frequentes?', ajuda: 'Elas viram a seção de perguntas e respostas da página.', ob: true },
+      { chave: 'publico', tipo: 'longo', titulo: 'Quem é o seu cliente ideal?', ajuda: 'Idade, região, momento de vida, profissão, poder de compra. Se ajudar, descreva um cliente real que você gostaria de ter mais (sem dizer o nome).', ob: true },
+      { chave: 'dores', tipo: 'longo', titulo: 'O que faz essa pessoa procurar você?', ajuda: 'O problema, o desejo ou a situação do momento. Ex.: uma dor que não passa, um processo trabalhista, a festa de 15 anos chegando, a vontade de mudar o visual.', ob: true },
+      { chave: 'duvidas', tipo: 'longo', titulo: 'Quais perguntas os clientes sempre fazem antes de contratar?', ajuda: 'Preço, prazo, como funciona, se dói, se atende convênio, se entrega na região. Elas viram a seção de perguntas e respostas da página.', ob: true },
     ] },
   { id: 'pagina', rot: 'A página', titulo: 'Por fim, a página',
     campos: [
-      { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar na página?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Agendar pelo WhatsApp', 'Preencher um formulário de contato', 'Comprar um serviço ou produto', 'Conhecer o meu trabalho'], outro: true },
-      { chave: 'contato', tipo: 'longo', titulo: 'Endereço, WhatsApp e horários de atendimento', ajuda: 'Exatamente como devem aparecer na página.', ob: true },
-      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site e outras páginas', ajuda: 'Os links que podem aparecer na página.' },
-      { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer na página?', ajuda: 'Assuntos, palavras, promessas ou imagens que você prefere evitar.' },
+      { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar na página?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Chamar no WhatsApp', 'Agendar um horário', 'Pedir um orçamento', 'Comprar online', 'Preencher um formulário de contato', 'Conhecer o meu trabalho'], outro: true },
+      { chave: 'contato', tipo: 'longo', titulo: 'Contato, endereço e horários', ajuda: 'Exatamente como devem aparecer na página. Se atende online ou faz entregas, diga a região.', ob: true },
+      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site e outros links', ajuda: 'Os links que podem aparecer na página.' },
+      { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer na página?', ajuda: 'Assuntos, palavras, promessas, imagens ou comparações que você prefere evitar, inclusive regras do seu conselho profissional.' },
       { chave: 'extra', tipo: 'longo', titulo: 'Quer contar mais alguma coisa?', ajuda: 'Qualquer informação que não perguntamos e que você acha importante.' },
     ] },
 ];
@@ -204,7 +213,10 @@ function htmlCampo(c) {
   }
   const multi = c.tipo === 'varias';
   const marcados = multi ? (Array.isArray(v) ? v : []) : [v];
-  const ops = c.opcoes.map((o, i) => `<label class="op${multi ? ' multi' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="${c.chave}" value="${esc(o)}" ${marcados.includes(o) ? 'checked' : ''}><span class="marc">${CHECK}</span><span class="txt">${esc(o)}</span></label>`).join('');
+  const ops = c.opcoes.map((op) => {
+    const o = typeof op === 'string' ? op : op.t, d = typeof op === 'string' ? '' : op.d;
+    return `<label class="op${multi ? ' multi' : ''}${d ? ' com-desc' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="${c.chave}" value="${esc(o)}" ${marcados.includes(o) ? 'checked' : ''}><span class="marc">${CHECK}</span><span class="txt">${esc(o)}${d ? `<small>${esc(d)}</small>` : ''}</span></label>`;
+  }).join('');
   const outro = c.outro ? `<label class="op multi"><input type="checkbox" name="${c.chave}" value="__outro" ${marcados.includes('__outro') ? 'checked' : ''}><span class="marc">${CHECK}</span><span class="txt">Outro</span></label>` : '';
   const outroTxt = c.outro ? `<input type="text" class="ent outro-txt${marcados.includes('__outro') ? ' vis' : ''}" data-outro="${c.chave}" placeholder="Qual?" value="${esc(r[c.chave + '_outro'] || '')}">` : '';
   return `<div class="campo" data-campo="${c.chave}" role="group" aria-labelledby="t-${c.chave}"><div class="tit" id="t-${c.chave}">${tit}</div>${ajuda}<div class="ops">${ops}${outro}</div>${outroTxt}${erro}</div>`;
