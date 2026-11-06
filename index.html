@@ -132,7 +132,7 @@ const ENVIO = 'https://script.google.com/macros/s/AKfycbyL3SAMXA_S0f0TNHEPWJTZjv
 const PESSOA = 'Como profissional';
 const ETAPAS = [
   { id: 'inicio', rot: 'Apresentação', titulo: 'Vamos montar o seu site?',
-    intro: ['Este é o ponto de partida do seu site. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com as suas palavras, do jeito que você explicaria para um cliente. Não existem respostas certas, e o que você digitar fica salvo neste aparelho até enviar. Leva cerca de 15 minutos.'],
+    intro: ['Este é o ponto de partida do seu site. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com as suas palavras, do jeito que você explicaria para um cliente. Não existem respostas certas, e o que você digitar fica salvo neste aparelho até enviar. Leva cerca de 20 minutos.'],
     campos: [
       { chave: 'nome', tipo: 'texto', titulo: 'Seu nome e o nome do negócio', ob: true, ph: 'Ex.: Ana Souza · Ana Doces Finos' },
       { chave: 'perfil', tipo: 'escolha', titulo: 'Como você se apresenta para os clientes?', ob: true, opcoes: [
@@ -172,18 +172,50 @@ const ETAPAS = [
       { chave: 'proposito', tipo: 'longo', titulo: 'Por que você faz o que faz?', ajuda: 'O que motivou a escolha da profissão ou do negócio e os valores que guiam o seu trabalho.' },
       { chave: 'frase', tipo: 'texto', titulo: 'Existe uma frase que representa a marca?', ajuda: 'Se não tiver, deixe em branco.' },
     ] },
+  { id: 'visual', rot: 'Visual e referências', titulo: 'Como o site vai parecer',
+    intro: ['Arquivos como logo, fotos e depoimentos não vão por aqui: mande no grupo do WhatsApp com a equipe da Stoot.'],
+    campos: [
+      { chave: 'identidade', tipo: 'escolha', titulo: 'Você já tem logo e identidade visual?', ajuda: 'Identidade visual é o conjunto de logo, cores e fontes da marca.', ob: true, opcoes: [
+        { t: 'Tenho logo, cores e fontes definidos', d: 'Mande os arquivos no grupo do WhatsApp' },
+        { t: 'Tenho só o logo', d: 'A gente define cores e fontes a partir dele' },
+        { t: 'Ainda não tenho', d: 'Vamos conversar sobre a criação' },
+      ] },
+      { chave: 'referencias', tipo: 'longo', titulo: 'Sites que você acha bonitos', ajuda: 'Mande 2 ou 3 links, de qualquer área, e diga o que gosta em cada um. Ex.: as cores, as fotos grandes, ser simples de navegar.' },
+      { chave: 'fotos', tipo: 'escolha', titulo: 'Tem fotos profissionais para o site?', ajuda: 'Suas, da equipe, do espaço ou dos produtos.', ob: true, opcoes: [
+        { t: 'Tenho fotos profissionais', d: 'Mande no grupo do WhatsApp' },
+        { t: 'Tenho algumas, mas preciso de mais', d: 'Mande as que tem no grupo do WhatsApp' },
+        { t: 'Vou precisar de captação', d: 'A equipe da Stoot organiza com você' },
+      ] },
+      { chave: 'depoimentos', tipo: 'escolha', titulo: 'Tem depoimentos de clientes que podem aparecer no site?', ajuda: 'Prints, textos ou vídeos de clientes satisfeitos. Mande no grupo do WhatsApp com a equipe. Só usamos com autorização de quem deu o depoimento.', ob: true, opcoes: [
+        { t: 'Tenho, com autorização', d: 'Mande no grupo do WhatsApp' },
+        { t: 'Tenho, mas preciso pedir autorização', d: 'Mande quando estiver liberado' },
+        { t: 'Ainda não tenho', d: 'A gente pode ajudar a reunir' },
+      ] },
+    ] },
   { id: 'publico', rot: 'Público', titulo: 'Quem você atende',
     campos: [
       { chave: 'publico', tipo: 'longo', titulo: 'Quem é o seu cliente ideal?', ajuda: 'Idade, região, momento de vida, profissão, poder de compra. Se ajudar, descreva um cliente real que você gostaria de ter mais (sem dizer o nome).', ob: true },
       { chave: 'dores', tipo: 'longo', titulo: 'O que faz essa pessoa procurar você?', ajuda: 'O problema, o desejo ou a situação do momento. Ex.: uma dor que não passa, um processo trabalhista, a festa de 15 anos chegando, a vontade de mudar o visual.', ob: true },
       { chave: 'duvidas', tipo: 'longo', titulo: 'Quais perguntas os clientes sempre fazem antes de contratar?', ajuda: 'Preço, prazo, como funciona, se dói, se atende convênio, se entrega na região. Elas viram a seção de perguntas e respostas do site.', ob: true },
     ] },
-  { id: 'pagina', rot: 'O site', titulo: 'Por fim, o site',
+  { id: 'estrutura', rot: 'Estrutura do site', titulo: 'Como o site vai funcionar',
     campos: [
       { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar no site?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Chamar no WhatsApp', 'Agendar um horário', 'Pedir um orçamento', 'Comprar online', 'Preencher um formulário de contato', 'Conhecer o meu trabalho'], outro: true },
-      { chave: 'contato', tipo: 'longo', titulo: 'Contato, endereço e horários', ajuda: 'Exatamente como devem aparecer no site. Se atende online ou faz entregas, diga a região.', ob: true },
-      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site atual e outros links', ajuda: 'Os links que podem aparecer no site.' },
+      { chave: 'paginas', tipo: 'varias', titulo: 'Que páginas o site precisa ter?', ajuda: 'Se não souber, marque "Ainda não sei" que a gente sugere.', ob: true, opcoes: ['Página única, com tudo em uma tela que rola', 'Início', 'Sobre', 'Serviços ou produtos (uma página para cada)', 'Blog', 'Contato', 'Ainda não sei'], outro: true },
+      { chave: 'funcionalidades', tipo: 'varias', titulo: 'O que o site precisa ter?', ajuda: 'Pode marcar mais de uma.', opcoes: ['Botão de WhatsApp', 'Agendamento online', 'Formulário que avisa a equipe', 'Mapa de localização', 'Avaliações do Google', 'Fotos do Instagram', 'Loja ou pagamento online', 'Área do cliente'], outro: true },
+      { chave: 'dominio', tipo: 'escolha', titulo: 'Você já tem domínio?', ajuda: 'Domínio é o endereço do site, como seunome.com.br.', ob: true, opcoes: ['Tenho', 'Não tenho', 'Não sei'] },
+      { chave: 'dominio_qual', tipo: 'texto', titulo: 'Se tiver, qual é o domínio e quem tem o acesso?', ajuda: 'Ex.: seunome.com.br, registrado no Registro.br pela secretária. Não mande senhas aqui.' },
+      { chave: 'site_atual', tipo: 'longo', titulo: 'Já tem um site hoje?', ajuda: 'Se tiver, mande o link e diga o que precisa ser mantido: páginas, blog, textos.' },
+    ] },
+  { id: 'detalhes', rot: 'Últimos detalhes', titulo: 'Por fim, os detalhes',
+    campos: [
+      { chave: 'cidades', tipo: 'texto', titulo: 'Em quais cidades ou bairros você atende?', ajuda: 'Se atende online ou faz entregas, diga a região. Isso ajuda o site a aparecer no Google para quem está perto.', ob: true },
+      { chave: 'buscas', tipo: 'longo', titulo: 'Como as pessoas procuram o que você faz no Google?', ajuda: 'As palavras que um cliente digitaria. Ex.: dermatologista em Curitiba; bolo de casamento Florianópolis; advogado trabalhista online.' },
+      { chave: 'contato', tipo: 'longo', titulo: 'Contato, endereço e horários', ajuda: 'Exatamente como devem aparecer no site.', ob: true },
+      { chave: 'redes', tipo: 'longo', titulo: 'Instagram e outros links', ajuda: 'Os links que podem aparecer no site.' },
       { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer no site?', ajuda: 'Assuntos, palavras, promessas, imagens ou comparações que você prefere evitar, inclusive regras do seu conselho profissional.' },
+      { chave: 'prazo', tipo: 'texto', titulo: 'Tem uma data em que o site precisa estar no ar?', ajuda: 'Ex.: inauguração, campanha, evento. Se não houver, deixe em branco.' },
+      { chave: 'aprovador', tipo: 'texto', titulo: 'Quem aprova o site do seu lado?', ajuda: 'Nome e WhatsApp de quem dá a palavra final.', ob: true },
       { chave: 'extra', tipo: 'longo', titulo: 'Quer contar mais alguma coisa?', ajuda: 'Qualquer informação que não perguntamos e que você acha importante.' },
     ] },
 ];
@@ -227,8 +259,7 @@ function desenhar() {
   const etapas = visiveis(), e = etapas[atual], total = ETAPAS.length - 1;
   document.getElementById('etapa').innerHTML = `Etapa <strong>${atual + 1}</strong> de ${total}`;
   document.getElementById('barra').style.width = `${((atual + 1) / total) * 100}%`;
-  const aviso = atual === 0 && !CODIGO ? '<div class="aviso">Use o link que a equipe da Stoot enviou para você. Assim as respostas chegam direto no seu cadastro.</div>' : '';
-  app.innerHTML = `<p class="rot">${esc(e.rot)}</p><h1>${esc(e.titulo)}</h1>${e.intro ? `<div class="intro">${e.intro.map((p) => `<p>${esc(p)}</p>`).join('')}</div>` : ''}${aviso}
+  app.innerHTML = `<p class="rot">${esc(e.rot)}</p><h1>${esc(e.titulo)}</h1>${e.intro ? `<div class="intro">${e.intro.map((p) => `<p>${esc(p)}</p>`).join('')}</div>` : ''}
     <form id="form" novalidate><div class="hp" aria-hidden="true"><label>Site<input type="text" name="site" tabindex="-1" autocomplete="off"></label></div>${e.campos.map(htmlCampo).join('')}</form>`;
   document.getElementById('voltar').classList.toggle('oculto', atual === 0);
   document.getElementById('seguir').textContent = atual === 0 ? 'Começar' : atual === etapas.length - 1 ? 'Enviar briefing' : 'Continuar';
