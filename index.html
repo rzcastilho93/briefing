@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Briefing da sua landing page · Stoot</title>
+<meta name="description" content="Questionário da Stoot para construir a sua landing page.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Tokens do stoot.OS (ficha.css): mesmas cores, raios e tipografia */
+:root {
+  --bg: #f6f6f2; --s1: #ffffff; --s2: #f0f0ec; --ln: #e4e4df; --ln2: #cfcfc8;
+  --tx: #080808; --tx2: #3f403c; --tx3: #666761;
+  --bl: #2d49f2; --bl-s: #eceffe; --ok: #0f7a4d; --ok-s: #e9fdf3; --ok-fill: #6af5b6;
+  --rd: #b42323; --rd-s: #fde0e0;
+  --r-sm: 10px; --r-md: 12px; --r-lg: 16px;
+  --mono: 'DM Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--tx); }
+body { font-family: 'Manrope', system-ui, -apple-system, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; color: inherit; }
+
+/* Topo fixo: marca, etapa e progresso */
+.topo { position: sticky; top: 0; z-index: 5; background: rgba(246,246,242,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--ln); }
+.topo-in { max-width: 640px; margin: 0 auto; padding: 14px 20px 12px; display: flex; align-items: center; gap: 14px; }
+.marca { font-weight: 800; font-size: 18px; letter-spacing: -.04em; white-space: nowrap; }
+.marca b { color: var(--bl); }
+.etapa { margin-left: auto; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--tx3); white-space: nowrap; }
+.etapa strong { color: var(--bl); font-weight: 500; }
+.barra { height: 3px; background: var(--ln); }
+.barra i { display: block; height: 100%; width: 0; background: var(--bl); transition: width .35s ease; }
+
+/* Conteúdo */
+main { max-width: 640px; margin: 0 auto; padding: 36px 20px 120px; }
+.rot { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--bl); margin: 0 0 10px; }
+h1 { margin: 0 0 12px; font-size: 34px; line-height: 1.1; font-weight: 800; letter-spacing: -.035em; }
+.intro { margin: 0 0 32px; color: var(--tx2); font-size: 16.5px; }
+.intro p { margin: 0 0 10px; }
+
+.campo { margin: 0 0 28px; }
+.campo > label, .campo > .tit { display: block; font-weight: 700; font-size: 16px; letter-spacing: -.01em; margin: 0 0 4px; }
+.campo .ob { color: var(--bl); margin-left: 3px; }
+.campo .opc { font-weight: 500; color: var(--tx3); font-size: 13px; margin-left: 6px; }
+.ajuda { color: var(--tx3); font-size: 14px; margin: 0 0 10px; }
+.ent { width: 100%; background: var(--s1); border: 1px solid var(--ln); border-radius: var(--r-sm); padding: 13px 14px; font-size: 16px; transition: border-color .15s, box-shadow .15s; }
+.ent::placeholder { color: #8e908a; }
+.ent:hover { border-color: var(--ln2); }
+.ent:focus { outline: none; border-color: var(--bl); box-shadow: 0 0 0 3px var(--bl-s); }
+textarea.ent { min-height: 116px; resize: vertical; line-height: 1.5; }
+
+/* Opções em cartão (escolha única e várias) */
+.ops { display: grid; gap: 10px; }
+.op { position: relative; display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 12px 14px; background: var(--s1); border: 1px solid var(--ln); border-radius: var(--r-md); cursor: pointer; transition: border-color .15s, box-shadow .15s, background .15s; user-select: none; }
+.op:hover { border-color: var(--ln2); }
+.op input { position: absolute; opacity: 0; pointer-events: none; }
+.op .marc { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ln2); display: grid; place-items: center; background: var(--s1); transition: all .15s; }
+.op.multi .marc { border-radius: 6px; }
+.op .marc svg { width: 13px; height: 13px; opacity: 0; transition: opacity .15s; }
+.op span.txt { font-weight: 600; font-size: 15.5px; }
+.op:has(input:checked) { border-color: var(--ok-fill); box-shadow: 0 0 0 1.5px var(--ok-fill); background: var(--ok-s); }
+.op:has(input:checked) .marc { background: var(--ok); border-color: var(--ok); }
+.op:has(input:checked) .marc svg { opacity: 1; }
+.op:has(input:focus-visible) { box-shadow: 0 0 0 3px var(--bl-s); border-color: var(--bl); }
+.outro-txt { margin-top: 10px; display: none; }
+.outro-txt.vis { display: block; }
+
+.erro { display: none; color: var(--rd); font-size: 13.5px; font-weight: 600; margin-top: 8px; }
+.campo.inv .erro { display: block; }
+.campo.inv .ent, .campo.inv .op { border-color: #e9a3a3; }
+
+.aviso { background: var(--s1); border: 1px solid var(--ln); border-left: 3px solid var(--bl); border-radius: var(--r-sm); padding: 12px 14px; font-size: 14px; color: var(--tx2); margin: 0 0 28px; }
+
+/* Rodapé fixo com navegação */
+.nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: rgba(246,246,242,.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--ln); padding-bottom: env(safe-area-inset-bottom); }
+.nav-in { max-width: 640px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: var(--r-sm); border: 1px solid var(--ln2); background: var(--s1); font-weight: 700; font-size: 15px; letter-spacing: -.01em; cursor: pointer; transition: filter .15s, background .15s; }
+.btn:hover { background: var(--s2); }
+.btn.pri { margin-left: auto; background: var(--bl); border-color: var(--bl); color: #fff; }
+.btn.pri:hover { filter: brightness(1.12); background: var(--bl); }
+.btn[disabled] { opacity: .55; cursor: wait; }
+.btn:focus-visible { outline: 2px solid var(--bl); outline-offset: 2px; }
+.salvo { font-size: 12.5px; color: var(--tx3); }
+
+/* Agradecimento */
+.fim { text-align: left; padding-top: 24px; }
+.fim .selo { width: 56px; height: 56px; border-radius: 50%; background: var(--ok-s); border: 1.5px solid var(--ok-fill); display: grid; place-items: center; margin-bottom: 22px; }
+.fim .selo svg { width: 26px; height: 26px; }
+
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.oculto { display: none !important; }
+
+@media (max-width: 520px) {
+  main { padding-top: 26px; }
+  h1 { font-size: 28px; }
+  .intro { font-size: 15.5px; }
+  .btn { padding: 0 18px; }
+  .salvo { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-in">
+    <div class="marca">stoot<b>.</b></div>
+    <div class="etapa" id="etapa"></div>
+  </div>
+  <div class="barra"><i id="barra"></i></div>
+</header>
+
+<main id="app" aria-live="polite"></main>
+
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <button class="btn" type="button" id="voltar">Voltar</button>
+    <span class="salvo" id="salvo"></span>
+    <button class="btn pri" type="button" id="seguir">Começar</button>
+  </div>
+</nav>
+
+<script>
+/* Endereço do script do Google (Apps Script, conta da Stoot) que recebe o envio e posta no Slack. */
+const ENVIO = 'https://script.google.com/macros/s/AKfycbyL3SAMXA_S0f0TNHEPWJTZjvh0b3uaYNDhze69PSuNI-7OoPDrFeOz6C8F5nBEOIO7Ow/exec';
+
+/* Perguntas: as mesmas do Google Forms e do Tally. `chave` é o que o stoot.OS usa para pôr cada resposta no dossiê. */
+const ETAPAS = [
+  { id: 'inicio', rot: 'Apresentação', titulo: 'Vamos montar a sua landing page',
+    intro: ['Este é o ponto de partida da sua página. As suas respostas guiam o texto, a estrutura e a estratégia.', 'Responda com calma e com as suas palavras: não existem respostas certas. Leva cerca de 15 minutos, e o que você digitar fica salvo neste aparelho até enviar.'],
+    campos: [
+      { chave: 'nome', tipo: 'texto', titulo: 'Seu nome e o nome da clínica ou empresa', ob: true, ph: 'Ex.: Dra. Ana Souza · Clínica Bem-Estar' },
+      { chave: 'perfil', tipo: 'escolha', titulo: 'Você é', ob: true, opcoes: ['Profissional de saúde', 'Clínica ou consultório', 'Outro tipo de negócio'] },
+    ] },
+  { id: 'saude', rot: 'Sua atuação', titulo: 'Agora, conte sobre você', se: (r) => r.perfil && r.perfil !== 'Outro tipo de negócio',
+    intro: ['É daqui que sai a área de apresentação da página.'],
+    campos: [
+      { chave: 'especialidade', tipo: 'texto', titulo: 'Qual é a sua especialidade (ou as especialidades da clínica)?', ajuda: 'Ex.: dermatologista, cirurgião capilar, nutricionista. Na clínica, liste as áreas atendidas.', ob: true },
+      { chave: 'registros', tipo: 'texto', titulo: 'Registros profissionais', ajuda: 'CRM, RQE, CRN ou outro, com o estado. Eles aparecem no rodapé da página.' },
+      { chave: 'trajetoria', tipo: 'longo', titulo: 'Formação e trajetória', ajuda: 'Faculdade, residência, especializações, cursos, trabalhos, publicações e conquistas. Quanto mais, melhor.', ob: true },
+      { chave: 'jornada', tipo: 'longo', titulo: 'Como é a jornada do paciente com você?', ajuda: 'Do primeiro contato ao acompanhamento. Ex.: consulta, avaliação, exames, procedimento, retorno.' },
+    ] },
+  { id: 'empresa', rot: 'Sua empresa', titulo: 'Agora, conte sobre a empresa', se: (r) => r.perfil === 'Outro tipo de negócio',
+    intro: ['É daqui que sai a área de apresentação da página.'],
+    campos: [
+      { chave: 'atuacao', tipo: 'longo', titulo: 'O que a sua empresa faz?', ajuda: 'Área de atuação, há quanto tempo existe e onde atende.', ob: true },
+      { chave: 'trajetoria', tipo: 'longo', titulo: 'História e conquistas', ajuda: 'Como começou, marcos importantes, prêmios, números e realizações.', ob: true },
+      { chave: 'jornada', tipo: 'longo', titulo: 'Como é a jornada do cliente com vocês?', ajuda: 'Do primeiro contato até a entrega e o pós-venda.' },
+    ] },
+  { id: 'servicos', rot: 'Serviços', titulo: 'O que você oferece',
+    campos: [
+      { chave: 'servicos', tipo: 'longo', titulo: 'Quais serviços você oferece?', ajuda: 'Um por linha: o nome do serviço e uma breve descrição. Quanto mais detalhe, melhor fica a página.', ob: true },
+      { chave: 'foco', tipo: 'longo', titulo: 'Qual serviço ou assunto é o foco desta landing page?', ajuda: 'Se for uma página para um serviço específico, diga qual. Se for institucional, escreva "todos".', ob: true },
+      { chave: 'servicos_juntos', tipo: 'longo', titulo: 'Quem contrata um serviço costuma pedir outro junto?', ajuda: 'Isso ajuda a mostrar na página a ligação entre os serviços.' },
+      { chave: 'servicos_futuros', tipo: 'longo', titulo: 'Pensa em oferecer novos serviços no futuro? Quais?', ajuda: 'Assim a página já nasce preparada para crescer.' },
+    ] },
+  { id: 'diferencial', rot: 'Diferenciais', titulo: 'Por que escolhem você',
+    campos: [
+      { chave: 'diferenciais', tipo: 'longo', titulo: 'Quais são os seus maiores diferenciais?', ajuda: 'Por que os clientes escolhem você e não outro profissional ou empresa?', ob: true },
+      { chave: 'provas', tipo: 'longo', titulo: 'O que comprova o seu trabalho?', ajuda: 'Números, prêmios, publicações, entrevistas, depoimentos que podemos usar. Não envie nomes, fotos ou dados de pacientes.' },
+      { chave: 'concorrentes', tipo: 'longo', titulo: 'Quem são os seus concorrentes ou referências?', ajuda: 'Pode ser alguém que você admira. Se tiver, mande o site ou o Instagram.' },
+      { chave: 'proposito', tipo: 'longo', titulo: 'Por que você escolheu essa profissão? Quais são os seus valores?' },
+      { chave: 'frase', tipo: 'texto', titulo: 'Existe uma frase que represente você ou a marca?' },
+    ] },
+  { id: 'publico', rot: 'Público', titulo: 'Quem você atende',
+    campos: [
+      { chave: 'publico', tipo: 'longo', titulo: 'Quem são os seus clientes ou pacientes?', ajuda: 'Idade, gênero, região, momento de vida, o que gostam. Se quiser, descreva um cliente típico.', ob: true },
+      { chave: 'dores', tipo: 'longo', titulo: 'O que leva essas pessoas a procurar você?', ajuda: 'Os problemas, frustrações e queixas mais comuns.', ob: true },
+      { chave: 'duvidas', tipo: 'longo', titulo: 'Quais são as dúvidas mais frequentes?', ajuda: 'Elas viram a seção de perguntas e respostas da página.', ob: true },
+    ] },
+  { id: 'pagina', rot: 'A página', titulo: 'Por fim, a página',
+    campos: [
+      { chave: 'objetivo', tipo: 'varias', titulo: 'O que a pessoa deve fazer ao chegar na página?', ajuda: 'Pode marcar mais de uma.', ob: true, opcoes: ['Agendar pelo WhatsApp', 'Preencher um formulário de contato', 'Comprar um serviço ou produto', 'Conhecer o meu trabalho'], outro: true },
+      { chave: 'contato', tipo: 'longo', titulo: 'Endereço, WhatsApp e horários de atendimento', ajuda: 'Exatamente como devem aparecer na página.', ob: true },
+      { chave: 'redes', tipo: 'longo', titulo: 'Instagram, site e outras páginas', ajuda: 'Os links que podem aparecer na página.' },
+      { chave: 'evitar', tipo: 'longo', titulo: 'Tem algo que NÃO pode aparecer na página?', ajuda: 'Assuntos, palavras, promessas ou imagens que você prefere evitar.' },
+      { chave: 'extra', tipo: 'longo', titulo: 'Quer contar mais alguma coisa?', ajuda: 'Qualquer informação que não perguntamos e que você acha importante.' },
+    ] },
+];
+
+const qs = new URLSearchParams(location.search);
+const CODIGO = (qs.get('c') || qs.get('codigo') || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+const GUARDA = 'briefing-stoot:' + (CODIGO || 'sem-codigo');
+const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"/></svg>';
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+let r = {}, atual = 0, enviado = false;
+try { const g = JSON.parse(localStorage.getItem(GUARDA) || 'null'); if (g && g.r) { r = g.r; atual = Math.min(g.atual || 0, ETAPAS.length - 1); } } catch (_) {}
+const guardar = () => { try { localStorage.setItem(GUARDA, JSON.stringify({ r, atual })); document.getElementById('salvo').textContent = 'Salvo neste aparelho'; } catch (_) {} };
+
+const visiveis = () => ETAPAS.filter((e) => !e.se || e.se(r));
+const app = document.getElementById('app');
+
+function htmlCampo(c) {
+  const v = r[c.chave];
+  const tit = `${esc(c.titulo)}${c.ob ? '<span class="ob" aria-hidden="true">*</span>' : '<span class="opc">opcional</span>'}`;
+  const ajuda = c.ajuda ? `<p class="ajuda" id="aj-${c.chave}">${esc(c.ajuda)}</p>` : '';
+  const erro = `<div class="erro" role="alert">${c.tipo === 'varias' || c.tipo === 'escolha' ? 'Escolha uma opção para continuar.' : 'Responda esta pergunta para continuar.'}</div>`;
+  if (c.tipo === 'texto' || c.tipo === 'longo') {
+    const attrs = `id="f-${c.chave}" data-chave="${c.chave}" class="ent" ${c.ob ? 'required' : ''} ${c.ajuda ? `aria-describedby="aj-${c.chave}"` : ''} placeholder="${esc(c.ph || '')}"`;
+    const ent = c.tipo === 'texto' ? `<input type="text" ${attrs} value="${esc(v || '')}" autocomplete="off">` : `<textarea ${attrs}>${esc(v || '')}</textarea>`;
+    return `<div class="campo" data-campo="${c.chave}"><label for="f-${c.chave}">${tit}</label>${ajuda}${ent}${erro}</div>`;
+  }
+  const multi = c.tipo === 'varias';
+  const marcados = multi ? (Array.isArray(v) ? v : []) : [v];
+  const ops = c.opcoes.map((o, i) => `<label class="op${multi ? ' multi' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="${c.chave}" value="${esc(o)}" ${marcados.includes(o) ? 'checked' : ''}><span class="marc">${CHECK}</span><span class="txt">${esc(o)}</span></label>`).join('');
+  const outro = c.outro ? `<label class="op multi"><input type="checkbox" name="${c.chave}" value="__outro" ${marcados.includes('__outro') ? 'checked' : ''}><span class="marc">${CHECK}</span><span class="txt">Outro</span></label>` : '';
+  const outroTxt = c.outro ? `<input type="text" class="ent outro-txt${marcados.includes('__outro') ? ' vis' : ''}" data-outro="${c.chave}" placeholder="Qual?" value="${esc(r[c.chave + '_outro'] || '')}">` : '';
+  return `<div class="campo" data-campo="${c.chave}" role="group" aria-labelledby="t-${c.chave}"><div class="tit" id="t-${c.chave}">${tit}</div>${ajuda}<div class="ops">${ops}${outro}</div>${outroTxt}${erro}</div>`;
+}
+
+function desenhar() {
+  // saúde e empresa são caminhos alternativos: o total é sempre o de um caminho (6), mesmo antes de escolher o perfil
+  const etapas = visiveis(), e = etapas[atual], total = ETAPAS.length - 1;
+  document.getElementById('etapa').innerHTML = `Etapa <strong>${atual + 1}</strong> de ${total}`;
+  document.getElementById('barra').style.width = `${((atual + 1) / total) * 100}%`;
+  const aviso = atual === 0 && !CODIGO ? '<div class="aviso">Use o link que a equipe da Stoot enviou para você. Assim as respostas chegam direto no seu cadastro.</div>' : '';
+  app.innerHTML = `<p class="rot">${esc(e.rot)}</p><h1>${esc(e.titulo)}</h1>${e.intro ? `<div class="intro">${e.intro.map((p) => `<p>${esc(p)}</p>`).join('')}</div>` : ''}${aviso}
+    <form id="form" novalidate><div class="hp" aria-hidden="true"><label>Site<input type="text" name="site" tabindex="-1" autocomplete="off"></label></div>${e.campos.map(htmlCampo).join('')}</form>`;
+  document.getElementById('voltar').classList.toggle('oculto', atual === 0);
+  document.getElementById('seguir').textContent = atual === 0 ? 'Começar' : atual === etapas.length - 1 ? 'Enviar briefing' : 'Continuar';
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+
+app.addEventListener('input', (ev) => {
+  const t = ev.target;
+  if (t.dataset.chave) r[t.dataset.chave] = t.value;
+  if (t.dataset.outro) r[t.dataset.outro + '_outro'] = t.value;
+  if (t.name && (t.type === 'radio' || t.type === 'checkbox')) {
+    const c = t.name;
+    if (t.type === 'radio') r[c] = t.value;
+    else r[c] = [...app.querySelectorAll(`input[name="${c}"]:checked`)].map((x) => x.value);
+    const ot = app.querySelector(`[data-outro="${c}"]`);
+    if (ot) { const on = (r[c] || []).includes('__outro'); ot.classList.toggle('vis', on); if (on && t.value === '__outro') ot.focus(); }
+  }
+  t.closest('.campo')?.classList.remove('inv');
+  guardar();
+});
+
+function vazio(c) {
+  const v = r[c.chave];
+  if (c.tipo === 'varias') { const l = Array.isArray(v) ? v : []; return !l.length || (l.length === 1 && l[0] === '__outro' && !String(r[c.chave + '_outro'] || '').trim()); }
+  return !String(v || '').trim();
+}
+function validar() {
+  const e = visiveis()[atual]; let primeiro = null;
+  for (const c of e.campos) {
+    const el = app.querySelector(`[data-campo="${c.chave}"]`);
+    const ruim = c.ob && vazio(c);
+    el.classList.toggle('inv', ruim);
+    if (ruim && !primeiro) primeiro = el;
+  }
+  if (primeiro) { primeiro.scrollIntoView({ behavior: 'smooth', block: 'center' }); (primeiro.querySelector('input, textarea') || {}).focus?.({ preventScroll: true }); }
+  return !primeiro;
+}
+
+function resposta(c) {
+  const v = r[c.chave];
+  if (c.tipo === 'varias') return (Array.isArray(v) ? v : []).map((x) => (x === '__outro' ? `Outro: ${String(r[c.chave + '_outro'] || '').trim()}` : x)).filter((x) => x && x !== 'Outro: ').join(', ');
+  return String(v || '').trim();
+}
+
+async function enviar() {
+  if (app.querySelector('input[name="site"]')?.value) return; // robô
+  const btn = document.getElementById('seguir');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  const respostas = [];
+  for (const e of visiveis()) for (const c of e.campos) { const x = resposta(c); if (x) respostas.push({ chave: c.chave, pergunta: c.titulo, resposta: x }); }
+  const dados = { v: 1, origem: 'Página Stoot', codigo: CODIGO, nome: resposta({ chave: 'nome', tipo: 'texto' }), perfil: r.perfil || '', enviado_em: new Date().toISOString(), respostas };
+  try {
+    // text/plain evita a checagem prévia de CORS; o script do Google lê o corpo como JSON.
+    await fetch(ENVIO, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(dados) });
+    enviado = true;
+    try { localStorage.removeItem(GUARDA); } catch (_) {}
+    agradecer();
+  } catch (_) {
+    btn.disabled = false; btn.textContent = 'Tentar de novo';
+    alert('Não conseguimos enviar agora. Confira a internet e tente de novo; suas respostas continuam salvas.');
+  }
+}
+
+function agradecer() {
+  document.getElementById('etapa').innerHTML = '<strong>Enviado</strong>';
+  document.getElementById('barra').style.width = '100%';
+  document.getElementById('nav').classList.add('oculto');
+  app.innerHTML = `<div class="fim"><div class="selo"><svg viewBox="0 0 16 16" fill="none" stroke="#0f7a4d" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-7"/></svg></div>
+    <p class="rot">Briefing recebido</p><h1>Obrigado! Agora é com a gente.</h1>
+    <div class="intro"><p>Suas respostas já chegaram para a equipe da Stoot.</p><p>Para seguir, mande logo, fotos e materiais da identidade visual no grupo do WhatsApp com a equipe.</p></div></div>`;
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('seguir').addEventListener('click', () => {
+  if (!validar()) return;
+  const total = visiveis().length;
+  if (atual === total - 1) return enviar();
+  atual++; guardar(); desenhar();
+});
+document.getElementById('voltar').addEventListener('click', () => { if (atual > 0) { atual--; guardar(); desenhar(); } });
+app.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && ev.target.tagName === 'INPUT' && ev.target.type === 'text') { ev.preventDefault(); document.getElementById('seguir').click(); } });
+window.addEventListener('beforeunload', (ev) => { if (!enviado && Object.keys(r).length && atual > 0) { ev.preventDefault(); ev.returnValue = ''; } });
+
+desenhar();
+</script>
+</body>
+</html>
